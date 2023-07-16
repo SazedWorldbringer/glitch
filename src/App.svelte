@@ -1,47 +1,63 @@
 <script lang="ts">
-  import svelteLogo from './assets/svelte.svg'
-  import viteLogo from '/vite.svg'
-  import Counter from './lib/Counter.svelte'
+  import "./app.css";
+
+  let url: string;
+  let isLoading: boolean = false;
+  let shortenedUrl: string;
+
+  const onSubmit = () => {
+    console.log(url);
+    const base = "https://glitch-sazed.vercel.app/";
+    const urlSplit = url
+      .split("/")
+      .map((part) => part[0])
+      .join("");
+    shortenedUrl = base + urlSplit;
+    console.log(shortenedUrl);
+  };
 </script>
 
-<main>
-  <div>
-    <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-      <img src={viteLogo} class="logo" alt="Vite Logo" />
-    </a>
-    <a href="https://svelte.dev" target="_blank" rel="noreferrer">
-      <img src={svelteLogo} class="logo svelte" alt="Svelte Logo" />
-    </a>
-  </div>
-  <h1>Vite + Svelte</h1>
+<main
+  class="container mx-auto h-screen flex flex-col gap-4 justify-center items-center"
+>
+  <form
+    class="w-full max-w-sm flex flex-col md:flex-row items-center gap-3"
+    on:submit|preventDefault={onSubmit}
+  >
+    <label for="url" class="sr-only">Url</label>
+    <input
+      class="flex h-10 w-full rounded-md border border-gray-300 bg-transparent px-3 py-2 text-sm ring-offset-white file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-300 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+      type="url"
+      name="url"
+      id="url"
+      required
+      placeholder="https://github.com/SazedWorldbringer"
+      bind:value={url}
+    />
+    <button
+      type="submit"
+      class="w-full md:w-min inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-gray-800 text-zinc-100 shadow hover:bg-gray-800/80 h-9 px-4 py-2"
+      disabled={isLoading}
+    >
+      {#if isLoading}
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+          class="mr-2 w-5 h-5 animate-spin"
+        >
+          <path
+            fill-rule="evenodd"
+            d="M15.312 11.424a5.5 5.5 0 01-9.201 2.466l-.312-.311h2.433a.75.75 0 000-1.5H3.989a.75.75 0 00-.75.75v4.242a.75.75 0 001.5 0v-2.43l.31.31a7 7 0 0011.712-3.138.75.75 0 00-1.449-.39zm1.23-3.723a.75.75 0 00.219-.53V2.929a.75.75 0 00-1.5 0V5.36l-.31-.31A7 7 0 003.239 8.188a.75.75 0 101.448.389A5.5 5.5 0 0113.89 6.11l.311.31h-2.432a.75.75 0 000 1.5h4.243a.75.75 0 00.53-.219z"
+            clip-rule="evenodd"
+          />
+        </svg>
+      {/if}
+      Shorten
+    </button>
+  </form>
 
-  <div class="card">
-    <Counter />
-  </div>
-
-  <p>
-    Check out <a href="https://github.com/sveltejs/kit#readme" target="_blank" rel="noreferrer">SvelteKit</a>, the official Svelte app framework powered by Vite!
-  </p>
-
-  <p class="read-the-docs">
-    Click on the Vite and Svelte logos to learn more
-  </p>
+  {#if shortenedUrl}
+    <p>Here's your shortened URL: <a href={shortenedUrl}>{shortenedUrl}</a></p>
+  {/if}
 </main>
-
-<style>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
-    transition: filter 300ms;
-  }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.svelte:hover {
-    filter: drop-shadow(0 0 2em #ff3e00aa);
-  }
-  .read-the-docs {
-    color: #888;
-  }
-</style>
