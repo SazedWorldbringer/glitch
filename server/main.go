@@ -5,6 +5,7 @@ import (
 
 	"github.com/SazedWorldbringer/url-shortener/routes"
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/joho/godotenv"
 )
@@ -21,8 +22,13 @@ func main() {
 	}
 
 	app := fiber.New()
+
+	// middleware
 	app.Use(logger.New())
+	app.Use(cors.New())
+
 	setupRoutes(app)
 
+	// Listen on port 4000
 	log.Fatal(app.Listen(":4000"))
 }
