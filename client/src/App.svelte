@@ -14,7 +14,7 @@
     };
 
     // make a post request to the api
-    const response = await axios.post("http://localhost:4000/api/v1", payload);
+    const response = await axios.post("https://glitch-sazed.up.railway.app/api/v1", payload);
     const body = response.data;
 
     shortenedUrl = body.short;
