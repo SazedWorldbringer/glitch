@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"os"
 
 	"github.com/SazedWorldbringer/url-shortener/routes"
 	"github.com/gofiber/fiber/v2"
@@ -29,6 +30,12 @@ func main() {
 
 	setupRoutes(app)
 
+	port := os.Getenv("PORT")
+
+	if port == "" {
+		port = "4000"
+	}
+
 	// Listen on port 4000
-	log.Fatal(app.Listen(":4000"))
+	log.Fatal(app.Listen("0.0.0.0:" + port))
 }
