@@ -1,19 +1,25 @@
 <script lang="ts">
   import "./app.css";
+  import axios from "axios";
 
   let url: string;
   let isLoading: boolean = false;
   let shortenedUrl: string;
 
-  const onSubmit = () => {
-    console.log(url);
-    const base = "https://glitch-sazed.vercel.app/";
-    const urlSplit = url
-      .split("/")
-      .map((part) => part[0])
-      .join("");
-    shortenedUrl = base + urlSplit;
-    console.log(shortenedUrl);
+  const onSubmit = async () => {
+    isLoading = true;
+
+    const payload = {
+      url: url,
+    };
+
+    // make a post request to the api
+    const response = await axios.post("http://localhost:4000/api/v1", payload);
+    const body = response.data;
+
+    shortenedUrl = body.short;
+
+    isLoading = false;
   };
 </script>
 
@@ -57,7 +63,11 @@
     </button>
   </form>
 
-  {#if shortenedUrl}
-    <p>Here's your shortened URL: <a href={shortenedUrl}>{shortenedUrl}</a></p>
-  {/if}
+  <p>
+    Here's your shortened URL: {#if shortenedUrl}
+      <a target="_blank" href={shortenedUrl}>{shortenedUrl}</a>
+    {:else}
+      _
+    {/if}
+  </p>
 </main>
