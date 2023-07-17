@@ -65,7 +65,7 @@
 
   <p>
     Here's your shortened URL: {#if shortenedUrl}
-      <a target="_blank" href={shortenedUrl}>{shortenedUrl}</a>
+      <a target="_blank" href={`https://${shortenedUrl}`}>https://{shortenedUrl}</a>
     {:else}
       _
     {/if}
